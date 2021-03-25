@@ -35,83 +35,94 @@ var color = d3
 
 //Load Data
 d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
-  //Scatterplot 1
-  // {
-  //   var xKey1 = "Sepal_Length";
-  //   var yKey1 = "Petal_Length";
+  // Scatterplot 1
+  {
 
-  //   //Add X axis
-  //   var x1 = d3
-  //     .scaleLinear()
-  //     .domain(d3.extent(data.map((val) => val[xKey1])))
-  //     .range([0, width]);
-  //   svg1
-  //     .append("g")
-  //     .attr("transform", "translate(0," + height + ")")
-  //     .call(d3.axisBottom(x1))
-  //     .call((g) =>
-  //       g
-  //         .append("text")
-  //         .attr("x", width)
-  //         .attr("y", margin.bottom - 4)
-  //         .attr("fill", "currentColor")
-  //         .attr("text-anchor", "end")
-  //         .text(xKey1)
-  //     );
+    let scData = [
+      { time_period_name: "AM_PEAK", avg: 50 },
+      { time_period_name: "EVENING", avg: 30 },
+      { time_period_name: "MIDDAY_SCHOOL", avg: 60 },
+    ];
 
-  //   //Add Y axis
-  //   var y1 = d3
-  //     .scaleLinear()
-  //     .domain(d3.extent(data.map((val) => val[yKey1])))
-  //     .range([height, 0]);
-  //   svg1
-  //     .append("g")
-  //     .call(d3.axisLeft(y1))
-  //     .call((g) =>
-  //       g
-  //         .append("text")
-  //         .attr("x", -margin.left)
-  //         .attr("y", 10)
-  //         .attr("fill", "currentColor")
-  //         .attr("text-anchor", "start")
-  //         .text(yKey1)
-  //     );
+    var xKey1 = "time_period_name";
+    var yKey1 = "avg";
 
-  //   // Add dots
-  //   var myCircle1 = svg1
-  //     .append("g")
-  //     .selectAll("circle")
-  //     .data(data)
-  //     .enter()
-  //     .append("circle")
-  //     .attr("id", (d) => d.id)
-  //     .attr("cx", function (d) {
-  //       return x1(d[xKey1]);
-  //     })
-  //     .attr("cy", function (d) {
-  //       return y1(d[yKey1]);
-  //     })
-  //     .attr("r", 8)
-  //     .style("fill", function (d) {
-  //       return color(d.Species);
-  //     })
-  //     .style("opacity", 0.5);
+    //Add X axis
+    var x1 = d3
+      .scaleLinear()
+      .domain(scData.map(function (d) {
+        return d["time_period_name"];
+      }))
+      // .domain(scData.map(function(d) { return d.time_period_name; }))
+      // .domain(d3.extent(scData.map((val) => val[xKey1])))
+      .range([0, width]);
+    svg1
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x1))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", width)
+          .attr("y", margin.bottom - 4)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "end")
+          .text(xKey1)
+      );
 
-  //   //Define a brush
-  //   var brush1 = d3
-  //     .brush()
-  //     .extent([
-  //       [0, 0],
-  //       [width, height],
-  //     ])
-  //     .on("start", clear)
-  //     .on("brush", updateChart1);
+    //Add Y axis
+    var y1 = d3
+      .scaleLinear()
+      .domain(d3.extent(scData.map((val) => val[yKey1])))
+      .range([height, 0]);
+    svg1
+      .append("g")
+      .call(d3.axisLeft(y1))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", -margin.left)
+          .attr("y", 10)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "start")
+          .text(yKey1)
+      );
 
-  //   //Adding brush to the svg
-  //   svg1.call(brush1);
-  // }
+    // Add dots
+    var myCircle1 = svg1
+      .append("g")
+      .selectAll("circle")
+      .data(scData)
+      .enter()
+      .append("circle")
+      .attr("id", (d) => d.id)
+      .attr("cx", function (d) {
+        return x1(d[xKey1]);
+      })
+      .attr("cy", function (d) {
+        return y1(d[yKey1]);
+      })
+      .attr("r", 8)
+      .style("fill", function (d) {
+        return color(d.Species);
+      })
+      .style("opacity", 0.5);
 
-  //Scatterplot 2
+    //Define a brush
+    var brush1 = d3
+      .brush()
+      .extent([
+        [0, 0],
+        [width, height],
+      ])
+      .on("start", clear)
+      .on("brush", updateChart1);
+
+    //Adding brush to the svg
+    svg1.call(brush1);
+  }
+
+  // Scatterplot 2
   {
     var xKey2 = "total_offs";
     var yKey2 = "total_ons";
@@ -192,9 +203,9 @@ d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
   {
     //This data is hard coded for demonstration.
     let barChartData = [
-      { species: "setosa", count: 50 },
-      { species: "versicolor", count: 50 },
-      { species: "virginica", count: 50 },
+      { time_period_name: "VERY_EARLY_MORNING", count: 50 },
+      { time_period_name: "PM_PEAK", count: 50 },
+      { time_period_name: "EARLY_AM", count: 50 },
     ];
 
     var x3 = d3
@@ -202,7 +213,7 @@ d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
       .range([0, width])
       .domain(
         barChartData.map(function (d) {
-          return d["species"];
+          return d["time_period_name"];
         })
       )
       .padding(0.2);
@@ -225,7 +236,7 @@ d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
       .enter()
       .append("rect")
       .attr("x", function (d) {
-        return x3(d["species"]);
+        return x3(d["time_period_name"]);
       })
       .attr("y", function (d) {
         return y3(d["count"]);
@@ -235,7 +246,7 @@ d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
         return height - y3(d["count"]);
       })
       .style("fill", function (d) {
-        return color(d["species"]);
+        return color(d["time_period_name"]);
       });
   }
 
@@ -270,7 +281,7 @@ d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
     //Check all the circles that are within the brush region
     myCircle2.classed("selected", (d) => {
       let brushed = isBrushed(extent, x2(d[xKey2]), y2(d[yKey2]));
-      if (brushed) selectedSpecies.add(d.Species);
+      if (brushed) selectedSpecies.add(d.time_period_name);
       return brushed;
     });
     myCircle1.classed("selected", (d) => {
@@ -279,7 +290,7 @@ d3.csv("MBTA_Line_and_Stop.csv").then((data) => {
 
     //Check the bars based on species selected
     bars.classed("selected", function (d) {
-      return selectedSpecies.has(d["species"]);
+      return selectedSpecies.has(d["time_period_name"]);
     });
   }
 
