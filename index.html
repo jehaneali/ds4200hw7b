@@ -20,11 +20,24 @@
 
 <body>
 
- <!-- Create a div where the circle will take place -->
+<h2>Average Flow by Time Period</h2>
 <div id="dataviz_brushScatter"></div>
-hello world 
-</body>
+This visualization depicts the average flow for each time period that's tracked.  Interestingly, the time periods 
+with the lowest and highest amounts of flow are right next to each other -- time period 9 has an average flow of 84, 
+whereas time period 10 has an average flow of 7319.  
+<br> <br>
+<h2>Total Ons vs Total Offs</h2>
+<div id="dataviz_Scatter"></div>
+This visualizations depics the total ons versus total offs for all points in the dataset.  The most surprising thing 
+was how different the scales for ons vs offs was -- total ons actually got past 100,000 in some cases, while total 
+offs had few past 10 or 11 thousand.  
 
+<br> <br>
+
+</body>
+The pop out effect I used was highlighting the rides that were on the orange or green line in their corresponding color.  
+I chose this approach because I thought that it was the most intuitive, and that orange and green would really pop out against
+a backdrop of gray points, which represent the red and blue lines. 
 <script src="brushinglinkingfinal.js"></script> 
 
 </html>
